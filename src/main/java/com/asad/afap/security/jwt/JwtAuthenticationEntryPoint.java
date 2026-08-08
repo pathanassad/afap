@@ -1,4 +1,4 @@
-package com.asad.afap.jwt;
+package com.asad.afap.security.jwt;
 
 public class JwtAuthenticationEntryPoint {
 }

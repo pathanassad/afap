@@ -14,4 +14,9 @@ public class JwtProperties {
     private Long expiration;
 
 
+
+
 }
+
+
+
