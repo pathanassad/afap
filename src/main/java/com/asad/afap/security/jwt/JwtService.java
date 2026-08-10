@@ -62,6 +62,9 @@ public class JwtService {
         return tokenUsername.equals(username) && !isTokenExpired(token);
     }
 
+    public Long getExpiration(){
+        return jwtProperties.getExpiration();
+    }
 
     public String generateToken(Map<String, Object> extraClaims, String subject){
 
