@@ -1,8 +1,10 @@
 package com.asad.afap.master.tenant.serviceimpl;
 
+import com.asad.afap.master.tenant.config.PostgresProperties;
 import com.asad.afap.master.tenant.config.TenantDatabaseProperties;
 import com.asad.afap.master.tenant.service.TenantDatabaseService;
 import lombok.RequiredArgsConstructor;
+import org.flywaydb.core.Flyway;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.sql.Statement;
 public class TenantDatabaseServiceImpl implements TenantDatabaseService {
 
     private final TenantDatabaseProperties properties;
+    private final PostgresProperties postgresProperties;
 
 
     @Override
@@ -31,6 +34,29 @@ public class TenantDatabaseServiceImpl implements TenantDatabaseService {
         catch (SQLException e){
             throw new RuntimeException("Failed to create tenant database" + databaseName, e );
         }
+
+    }
+
+
+    @Override
+    public void initializeDatabase(String databaseName){
+        String tenantUrl = "jdbc:postgresql://"
+                 + postgresProperties.getHost()
+                + ":"
+                + postgresProperties.getPort()
+                + "/"
+                + databaseName;
+
+        Flyway flyway = Flyway.configure()
+                .dataSource(
+                        tenantUrl,
+                        properties.getUsername(),
+                        properties.getPassword()
+                )
+                .locations("classpath:db/migration/tenant")
+                .load();
+        flyway.migrate();
+
 
     }
 
