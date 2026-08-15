@@ -9,7 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface TenantRepository extends JpaRepository<Tenants, UUID> {
-    void createDatabase(String databaseName);
 
 
     boolean existsByTenantCode(String tenantCode);

@@ -9,5 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface SubscriptionPlanRepository extends JpaRepository<SubscriptionPlans, UUID> {
+         boolean existsByPlanName(String planName);
 
 }

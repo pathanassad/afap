@@ -23,7 +23,7 @@ public class TenantDatabaseServiceImpl implements TenantDatabaseService {
 
     @Override
     public void createDatabase(String databaseName){
-        if(!databaseName.matches("^[a-zA-Z0-9_]+$]")){
+        if(!databaseName.matches("^[a-zA-Z0-9_]+$")){
             throw new IllegalArgumentException("Invalid Database Name");
         }
         String sql = "CREATE DATABASE " + databaseName;
@@ -53,7 +53,7 @@ public class TenantDatabaseServiceImpl implements TenantDatabaseService {
                         properties.getUsername(),
                         properties.getPassword()
                 )
-                .locations("classpath:db/migration/tenant")
+                .locations("classpath:tenant-db/migration")
                 .load();
         flyway.migrate();
 

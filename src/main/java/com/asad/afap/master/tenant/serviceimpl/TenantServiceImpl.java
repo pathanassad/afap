@@ -40,6 +40,7 @@ public class TenantServiceImpl implements TenantService {
         String databaseName = "tenant_" + request.getTenantCode();
 
         tenantDatabaseService.createDatabase(databaseName);
+        tenantDatabaseService.initializeDatabase(databaseName);
 
         Tenants tenant = new Tenants();
         tenant.setTenantCode(request.getTenantCode());
@@ -49,7 +50,7 @@ public class TenantServiceImpl implements TenantService {
         tenant.setDatabaseName(databaseName);
         tenant.setStatus("ACTIVE");
 
-        tenant = tenantRepository.save(tenant);
+        tenantRepository.save(tenant);
 
         TenantSubscription subscription = new TenantSubscription();
         subscription.setTenant(tenant);
