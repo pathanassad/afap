@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table
+@Table(name = "tenant_activation_tokens", schema = "afap")
 public class TenantActivationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

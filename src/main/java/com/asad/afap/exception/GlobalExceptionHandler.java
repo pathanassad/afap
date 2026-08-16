@@ -1,4 +1,4 @@
-package com.asad.afap.master.auth.exception;
+package com.asad.afap.exception;
 
 
 import org.springframework.http.HttpStatus;
@@ -16,6 +16,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("status", 401, "message", "Invalid Email or Password"));
     }
 
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Map<String, Object>> handleBusinessException(BusinessException ex){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("status",  400 , "message", ex.getMessage()));
+    }
 
 
 }

@@ -15,7 +15,6 @@ CREATE TABLE users (
 
                        status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
 
-                       must_change_password BOOLEAN NOT NULL DEFAULT FALSE,
 
                        created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

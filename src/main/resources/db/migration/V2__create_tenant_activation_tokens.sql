@@ -1,5 +1,5 @@
 CREATE TABLE afap.tenant_activation_tokens (
-                                               id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                                               id UUID PRIMARY KEY ,
 
                                                tenant_id UUID NOT NULL,
 

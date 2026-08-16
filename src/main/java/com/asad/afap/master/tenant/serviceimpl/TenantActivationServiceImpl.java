@@ -1,5 +1,6 @@
 package com.asad.afap.master.tenant.serviceimpl;
 
+import com.asad.afap.exception.BusinessException;
 import com.asad.afap.master.tenant.entity.TenantActivationToken;
 import com.asad.afap.master.tenant.entity.Tenants;
 import com.asad.afap.master.tenant.repository.TenantActivationTokenRepository;
@@ -26,7 +27,7 @@ public class TenantActivationServiceImpl implements TenantActivationService {
     @Override
     public String createActivationToken(Tenants tenant){
         String rawToken = UUID.randomUUID().toString();
-        String tokenHash = passwordEncoder.encode(rawToken);
+        String tokenHash = TokenUtils.sha256(rawToken);
 
         TenantActivationToken activationToken = new TenantActivationToken();
         activationToken.setTenant(tenant);
@@ -36,7 +37,7 @@ public class TenantActivationServiceImpl implements TenantActivationService {
 
         tenantActivationTokenRepository.save(activationToken);
 
-        return tokenHash;
+        return rawToken;
 
     }
 
@@ -48,7 +49,7 @@ public class TenantActivationServiceImpl implements TenantActivationService {
 
         TenantActivationToken activationToken = tenantActivationTokenRepository.findByTokenHashAndUsedFalse(tokenHash)
                 .filter(t -> t.getExpiresAt().isAfter(Instant.now()))
-                .orElseThrow(()-> new IllegalArgumentException("Invalid or expired Activation Token"));
+                .orElseThrow(()-> new BusinessException("Invalid or expired Activation Token"));
         Tenants tenant = activationToken.getTenant();
 
         String encodedPassword = passwordEncoder.encode(password);

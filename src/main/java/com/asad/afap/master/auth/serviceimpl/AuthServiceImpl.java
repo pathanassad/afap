@@ -26,7 +26,14 @@ public class AuthServiceImpl implements AuthService {
                 request.getEmail(),
                 request.getPassword()
         ));
-        String token = jwtService.generateToken(Map.of(), authentication.getName());
+
+        String role = authentication.getAuthorities().stream()
+                .findFirst()
+                .map(authority -> authority.getAuthority()
+                        .replace("ROLE_", ""))
+                .orElseThrow(()-> new IllegalStateException("User role not found"));
+
+        String token = jwtService.generateToken(Map.of("role", role), authentication.getName());
 
         return new LoginResponse(token, "Bearer", jwtService.getExpiration());
 

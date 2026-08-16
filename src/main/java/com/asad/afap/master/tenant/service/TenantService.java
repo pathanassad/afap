@@ -1,9 +1,9 @@
 package com.asad.afap.master.tenant.service;
 
 import com.asad.afap.master.tenant.dto.TenantCreateRequest;
-import com.asad.afap.master.tenant.entity.Tenants;
+import com.asad.afap.master.tenant.dto.TenantCreateResponse;
 
 public interface TenantService {
-    Tenants createTenant(TenantCreateRequest request);
+    TenantCreateResponse createTenant(TenantCreateRequest request);
 
 }

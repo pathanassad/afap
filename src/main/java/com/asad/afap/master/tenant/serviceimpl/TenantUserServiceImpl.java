@@ -1,5 +1,6 @@
 package com.asad.afap.master.tenant.serviceimpl;
 
+import com.asad.afap.exception.BusinessException;
 import com.asad.afap.master.tenant.config.PostgresProperties;
 import com.asad.afap.master.tenant.service.TenantUserService;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,8 @@ public class TenantUserServiceImpl implements TenantUserService {
                     + databaseName;
             String sql = """
             INSERT INTO users 
-            (email, password, role, status, must_change_pasword) 
-            VALUES (?, NULL, 'ADMIN', 'PENDING', FALSE)
+            (email, password, role, status) 
+            VALUES (?, NULL, 'ADMIN', 'PENDING')
                  """;
 
             try(Connection connection = DriverManager.getConnection(url, properties.getUsername(), properties.getPassword());
@@ -74,13 +75,17 @@ public class TenantUserServiceImpl implements TenantUserService {
                 int updated = statement.executeUpdate();
 
                 if( updated == 0){
-                    throw new IllegalArgumentException(
+                    throw new BusinessException(
                             "Tenant Admin not Found"
                     );
 
                 }
 
-            }catch(Exception e){
+
+            } catch(BusinessException e){
+                throw e;
+            }
+            catch(Exception e){
                 throw new RuntimeException("Failed to activate Tenant Admin", e);
             }
 
