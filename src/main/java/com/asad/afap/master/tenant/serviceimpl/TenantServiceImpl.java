@@ -46,7 +46,7 @@ public class TenantServiceImpl implements TenantService {
                 .findById(request.getPlanId())
                 .orElseThrow(()-> new BusinessException("Subscription Plan Not Found") );
 
-        String databaseName = "tenant_" + request.getTenantCode();
+        String databaseName = "tenant_" + request.getTenantCode().toLowerCase();
 
         tenantDatabaseService.createDatabase(databaseName);
         tenantDatabaseService.initializeDatabase(databaseName);

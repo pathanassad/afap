@@ -4,6 +4,7 @@ import com.asad.afap.master.tenant.config.PostgresProperties;
 import com.asad.afap.master.tenant.config.TenantDatabaseProperties;
 import com.asad.afap.master.tenant.service.TenantDatabaseService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.sql.Statement;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TenantDatabaseServiceImpl implements TenantDatabaseService {
 
     private final TenantDatabaseProperties properties;
@@ -23,6 +25,7 @@ public class TenantDatabaseServiceImpl implements TenantDatabaseService {
 
     @Override
     public void createDatabase(String databaseName){
+        log.info("Creating database {}", databaseName);
         if(!databaseName.matches("^[a-zA-Z0-9_]+$")){
             throw new IllegalArgumentException("Invalid Database Name");
         }
@@ -47,6 +50,10 @@ public class TenantDatabaseServiceImpl implements TenantDatabaseService {
                 + "/"
                 + databaseName;
 
+        System.out.println("TENANT DB URL = " + tenantUrl);
+        System.out.println("POSTGRES HOST = " + postgresProperties.getHost());
+        System.out.println("POSTGRES PORT = " + postgresProperties.getPort());
+        System.out.println("POSTGRES USER = " + properties.getUsername());
         Flyway flyway = Flyway.configure()
                 .dataSource(
                         tenantUrl,
