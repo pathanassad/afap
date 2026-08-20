@@ -7,5 +7,5 @@ public interface TenantActivationService {
 
     String createActivationToken(Tenants tenant);
 
-    void activateTenant(String token, String password);
+    String activateTenant(String token, String password);
 }

@@ -1,8 +1,10 @@
 package com.asad.afap.master.tenant.controller;
 
 import com.asad.afap.master.tenant.dto.TenantActivationRequest;
+import com.asad.afap.master.tenant.dto.TenantActivationResponse;
 import com.asad.afap.master.tenant.service.TenantActivationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +20,9 @@ public class TenantActivationController {
     private final TenantActivationService tenantActivationService;
 
     @PostMapping("/activate")
-    public ResponseEntity<String>  activate(@RequestBody TenantActivationRequest request){
-        tenantActivationService.activateTenant(request.getToken(), request.getPassword());
-        return ResponseEntity.ok("Tenant Account Activated Successfully");
+    public ResponseEntity<TenantActivationResponse>  activate(@Valid @RequestBody TenantActivationRequest request){
+        String tenantCode = tenantActivationService.activateTenant(request.getToken(), request.getPassword());
+        return ResponseEntity.ok(new TenantActivationResponse("Tenant Activated Successfully ",tenantCode));
 
     }
 }

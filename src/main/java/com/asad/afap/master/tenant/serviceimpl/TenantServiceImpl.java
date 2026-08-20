@@ -13,6 +13,7 @@ import com.asad.afap.master.tenant.service.TenantActivationService;
 import com.asad.afap.master.tenant.service.TenantDatabaseService;
 import com.asad.afap.master.tenant.service.TenantService;
 import com.asad.afap.master.tenant.service.TenantUserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TenantServiceImpl implements TenantService {
     private final TenantRepository tenantRepository;
     private final SubscriptionPlanRepository subscriptionPlanRepository;
@@ -71,7 +73,7 @@ public class TenantServiceImpl implements TenantService {
         tenantSubscriptionRepository.save(subscription);
 
         // create initial tenant Admin
-         tenantUserService.createInitialAdmin(databaseName, request.getEmail());
+         tenantUserService.createInitialAdmin(databaseName, request.getEmail(), request.getFirstName(), request.getLastName());
 
          // generate activation token
         String activationToken = tenantActivationService.createActivationToken(tenant);

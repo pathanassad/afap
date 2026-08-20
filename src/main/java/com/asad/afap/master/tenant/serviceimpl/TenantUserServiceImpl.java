@@ -3,6 +3,7 @@ package com.asad.afap.master.tenant.serviceimpl;
 import com.asad.afap.exception.BusinessException;
 import com.asad.afap.master.tenant.config.PostgresProperties;
 import com.asad.afap.master.tenant.service.TenantUserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,13 +14,16 @@ import java.sql.PreparedStatement;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TenantUserServiceImpl implements TenantUserService {
         private final PostgresProperties properties;
 
         @Override
         public void createInitialAdmin(
                 String databaseName,
-                String email
+                String email,
+                String firstName,
+                String lastName
         ){
             String url = "jdbc:postgresql://"
                     + properties.getHost()
@@ -29,8 +33,8 @@ public class TenantUserServiceImpl implements TenantUserService {
                     + databaseName;
             String sql = """
             INSERT INTO users 
-            (email, password, role, status) 
-            VALUES (?, NULL, 'ADMIN', 'PENDING')
+            (email, password, role, status, first_name, last_name) 
+            VALUES (?, NULL, 'ADMIN', 'PENDING', ?, ?)
                  """;
 
             try(Connection connection = DriverManager.getConnection(url, properties.getUsername(), properties.getPassword());
@@ -38,6 +42,8 @@ public class TenantUserServiceImpl implements TenantUserService {
 
             ) {
                 statement.setString(1, email);
+                statement.setString(2, firstName);
+                statement.setString(3, lastName);
                 statement.executeUpdate();
 
             }

@@ -7,6 +7,7 @@ import com.asad.afap.master.tenant.repository.TenantActivationTokenRepository;
 import com.asad.afap.master.tenant.service.TenantActivationService;
 import com.asad.afap.master.tenant.service.TenantUserService;
 import com.asad.afap.master.tenant.util.TokenUtils;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TenantActivationServiceImpl implements TenantActivationService {
 
     private final TenantActivationTokenRepository tenantActivationTokenRepository;
@@ -41,7 +43,7 @@ public class TenantActivationServiceImpl implements TenantActivationService {
 
     }
 
-    public void activateTenant(
+    public String activateTenant(
             String token,
             String password
     ){
@@ -63,6 +65,7 @@ public class TenantActivationServiceImpl implements TenantActivationService {
 
         tenantActivationTokenRepository.save(activationToken);
 
+        return tenant.getTenantCode();
     }
 
 

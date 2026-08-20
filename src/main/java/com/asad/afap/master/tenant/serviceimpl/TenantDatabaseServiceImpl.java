@@ -3,6 +3,7 @@ package com.asad.afap.master.tenant.serviceimpl;
 import com.asad.afap.master.tenant.config.PostgresProperties;
 import com.asad.afap.master.tenant.config.TenantDatabaseProperties;
 import com.asad.afap.master.tenant.service.TenantDatabaseService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
@@ -17,6 +18,7 @@ import java.sql.Statement;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class TenantDatabaseServiceImpl implements TenantDatabaseService {
 
     private final TenantDatabaseProperties properties;
